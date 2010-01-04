@@ -1,6 +1,6 @@
 import Sudoku
 main = do
-       interact (unlines . take5 . unlines . (map stuff) . lines . concat . lines)
+       interact (unlines . take5 . unlines . (map solveOne) . lines . concat . lines)
 
 take5 :: [Char] -> [String]
 take5 [] = []

@@ -1,7 +1,7 @@
 {-# OPTIONS -O2 -Wall -Werror -Wwarn #-}
 
 module Sudoku (
-               stuff,
+               solveOne,
                triples,
               ) where
 
@@ -18,6 +18,16 @@ data Value = Element Int | Options [Int]
 type Pair = (Coord, Value)
 
 
+solveOne :: String -> String
+solveOne ls =
+    concatMap pretty $
+    sortBy compareC $
+    compute $
+    zip triples $
+    -- map readOne $ concat $ lines ls
+    map readOne ls
+
+
 -- 3 dimensional coordinates with box as 3rd
 triples :: [Coord]
 triples = 
@@ -32,15 +42,6 @@ triples =
           where
             x2z = ((x - 1) `div` 3) + 1
             y2z = ((y - 1) `div` 3) * 3
-
-stuff :: String -> String
-stuff ls =
-    concatMap pretty $
-    sortBy compareC $
-    compute $
-    zip triples $
-    -- map readOne $ concat $ lines ls
-    map readOne ls
 
 pretty :: (t, Value) -> String
 pretty (_, Element e) = show e

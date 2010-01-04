@@ -27,4 +27,4 @@ test_sudoku2 = pairlist_diff "987654321.........................................
 
 
 pairlist_diff string =
-    (filter (uncurry (/=)) $ filter (\(a, _) -> a /= '.') $ zip string $ stuff string)
+    (filter (uncurry (/=)) $ filter (\(a, _) -> a /= '.') $ zip string $ solveOne string)
