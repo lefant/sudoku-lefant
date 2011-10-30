@@ -7,11 +7,13 @@ of seconds.
 Now I can happily smile to myself whenever I see someone solving
 sudokus from the newspaper ;)
 
-github repo: https://github.com/lefant/sudoku-lefant
-html rendering of the literate haskell: http://lefant.github.com/sudoku-lefant/
+github repo: https://github.com/lefant/sudoku-lefant/
 
-If you are interested in more haskell solutions to the sudoku
-problem, make sure to check out [Sudoku page on haskellwiki][http://www.haskell.org/haskellwiki/Sudoku]
+annotated source: http://lefant.github.com/sudoku-lefant/
+
+If you are interested in more haskell solutions to the sudoku problem,
+check out the [Sudoku page on
+haskellwiki](http://www.haskell.org/haskellwiki/Sudoku)!
 
 
 building and running
@@ -20,18 +22,23 @@ building and running
 sudoku-run
 ----------
 
-ghc --make sudoku-run.hs
+to build
+
+    ghc --make sudoku-run.hs
 
 then to run
 
-./sudoku-run <sudoku1.txt
+    ./sudoku-run <sudoku1.txt
 
 sudoku-test (mini testsuite)
 ----------------------------
 
-cabal install test-framework-hunit
-ghc --make sudoku-test.hs
+to install dependencies / build
+
+    cabal install test-framework-hunit
+    ghc --make sudoku-test.hs
 
 then to run
 
-./sudoku-test
+    ./sudoku-test
+
