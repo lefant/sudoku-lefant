@@ -1,7 +1,7 @@
 Lefants haskell sudoku solver
 -----------------------------
 
-There are two helpers programs:
+There are two helper programs:
 
  * sudoku-test runs some (very very basic) tests.
  * sudoku-run is the binary for normal invocation, it will read from
