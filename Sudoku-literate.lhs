@@ -99,12 +99,12 @@ This will return a list of three-dimensional coordinates as explained
 with the Coord type above.
 
 > triples :: [Coord]
-> triples = 
+> triples =
 >     zip3 a b $ map z pairs
 >     where
 >       pairs = [(a', b') | b' <- [1..9], a' <- [1..9]]
 >       (a, b) = unzip pairs
-> 
+>
 >       z :: (Int, Int) -> Int
 >       z (x, y) =
 >           x2z + y2z
@@ -181,19 +181,19 @@ if all the fields have one element we are done.
 >             -- this branch contains no solutions, retry without it
 >             Nothing ->
 >                 solve es ((c, Options as') : os')
-> 
+>
 >     where
 >       -- first prune all Options list at the current level, then order
 >       -- branches with *few* options first
 >       ((c, Options as) : os') = sortBy lessOptions $ map revaluate os
-> 
+>
 >       lessOptions (_, Options xs) (_, Options ys) =
 >           compare (length xs) (length ys)
 >       lessOptions (_, Element _) _ =
 >           error "illegal lessOptions call"
 >       lessOptions (_, Options _) (_, Element _) =
 >           error "illegal lessOptions call"
-> 
+>
 >       -- filter out other Options from list that are made impossible
 >       -- by choosing a certain one
 >       revaluate :: Pair -> Pair
@@ -203,7 +203,7 @@ if all the fields have one element we are done.
 >           where
 >             aas' = aas \\ otherValues
 >             otherValues = map (\(_, Element e) -> e)
->                           ((filter (\e -> x == px e) es) ++ 
+>                           ((filter (\e -> x == px e) es) ++
 >                            (filter (\e -> y == py e) es) ++
 >                            (filter (\e -> z == pz e) es))
 >       revaluate ((_, _, _), Element _) =
