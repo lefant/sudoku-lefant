@@ -11,12 +11,10 @@ import Control.Monad
 -- 3 dimensional coordinate (3rd is the box!)
 type Coord = (Int, Int, Int)
 
--- Solution value or List of remaining Candidates
-data Value = Element Int | Options [Int]
-           deriving (Show)
-
-type Pair = (Coord, Value)
-
+data Element = Element Int deriving (Show)
+data Options = Options [Int] deriving (Show)
+type EPair = (Coord, Element)
+type OPair = (Coord, Options)
 
 solveOne :: String -> String
 solveOne ls =
@@ -43,9 +41,8 @@ triples =
             x2z = ((x - 1) `div` 3) + 1
             y2z = ((y - 1) `div` 3) * 3
 
-pretty :: (t, Value) -> String
+pretty :: (t, Element) -> String
 pretty (_, Element e) = show e
-pretty (_, Options _) = ""
 
 compareC :: (Ord t2, Ord t3) =>
             ((t2, t3, t4), t) -> ((t2, t3, t5), t1) -> Ordering
@@ -58,19 +55,17 @@ compareC (c1, _) (c2, _) =
 
 
 
-readOne :: Char -> Value
+readOne :: Char -> Options
 readOne c =
     case c `elem` (map (head.show) ([1..9] :: [Int])) of
-      True -> Element (read [c])
+      True -> Options [(read [c])]
       False -> Options [1..9]
 
-compute :: [Pair] -> [Pair]
+compute :: [OPair] -> [EPair]
 compute ls =
-    head $ (foldM solve done todo)
-    where
-      (done, todo) = partition isElement ls
+    head $ foldM solve [] ls
 
-solve :: [Pair] -> Pair -> [[Pair]]
+solve :: [EPair] -> OPair -> [[EPair]]
 solve es (c, Options as) =
     map (\a -> (c, Element a) : es) aas
     where
@@ -83,16 +78,11 @@ solve es (c, Options as) =
       (x, y, z) = c
 
 
-isElement :: (t, Value) -> Bool
-isElement (_, Element _) = True
-isElement (_, Options _) = False
-
-
 -- project coordinate from Pair
-px :: Pair -> Int
+px :: EPair -> Int
 px ((x, _, _), _) = x
-py :: Pair -> Int
+py :: EPair -> Int
 py ((_, y, _), _) = y
-pz :: Pair -> Int
+pz :: EPair -> Int
 pz ((_, _, z), _) = z
 
