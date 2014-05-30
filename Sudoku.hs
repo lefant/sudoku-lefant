@@ -76,18 +76,7 @@ solve es [] = [es]
     -- error $ "no more options for " ++ show c
     -- Nothing
 solve es os =
-    -- map (\a -> solve ((c, Element a) : es) os') as
-    case as of
-      -- no more Options, no solutions possible
-      [] -> []
-      -- try first option
-      (a : as') ->
-          -- recurse using backtracking, if we can solve it
-          case solve ((c, Element a) : es) os' of
-            -- this branch contains no solutions, retry without it
-            [] -> solve es ((c, Options as') : os')
-            -- we are done
-            results -> results
+    concatMap (\a -> solve ((c, Element a) : es) os') as
     where
       -- first prune all Options list at the current level, then order
       -- branches with *few* options first
