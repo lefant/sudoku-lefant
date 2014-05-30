@@ -6,7 +6,7 @@ module Sudoku (
               ) where
 
 import Data.List
-
+import Control.Monad
 
 -- 3 dimensional coordinate (3rd is the box!)
 type Coord = (Int, Int, Int)
@@ -66,43 +66,21 @@ readOne c =
 
 compute :: [Pair] -> [Pair]
 compute ls =
-    head $ solve done todo
+    head $ (foldM solve done todo)
     where
       (done, todo) = partition isElement ls
 
-solve :: [Pair] -> [Pair] -> [[Pair]]
-solve es [] = [es]
--- solve es ((c, Options []) : os) =
-    -- error $ "no more options for " ++ show c
-    -- Nothing
-solve es os =
-    concatMap (\a -> solve ((c, Element a) : es) os') as
+solve :: [Pair] -> Pair -> [[Pair]]
+solve es (c, Options as) =
+    map (\a -> (c, Element a) : es) aas
     where
-      -- first prune all Options list at the current level, then order
-      -- branches with *few* options first
-      ((c, Options as) : os') = sortBy lessOptions $ map revaluate os
-
-      lessOptions (_, Options xs) (_, Options ys) =
-          compare (length xs) (length ys)
-      lessOptions (_, Element _) _ =
-          error "illegal lessOptions call"
-      lessOptions (_, Options _) (_, Element _) =
-          error "illegal lessOptions call"
-
-      -- filter out other Options from list that are made impossible
-      -- by choosing a certain one
-      revaluate :: Pair -> Pair
-      revaluate (c'@(x, y, z), Options aas) =
-          {-# SCC "revaluate" #-}
-          (c', Options aas')
-          where
-            aas' = aas \\ otherValues
-            otherValues = map (\(_, Element e) -> e)
-                          ((filter (\e -> x == px e) es) ++
-                           (filter (\e -> y == py e) es) ++
-                           (filter (\e -> z == pz e) es))
-      revaluate ((_, _, _), Element _) =
-          error "illegal revaluate call"
+      -- filter remove Options already taken by other coordinates
+      aas = as \\ otherValues
+      otherValues = map (\(_, Element e) -> e)
+                      ((filter (\e -> x == px e) es) ++
+                       (filter (\e -> y == py e) es) ++
+                       (filter (\e -> z == pz e) es))
+      (x, y, z) = c
 
 
 isElement :: (t, Value) -> Bool
