@@ -30,7 +30,7 @@ solveOne ls =
 
 -- 3 dimensional coordinates with box as 3rd
 triples :: [Coord]
-triples = 
+triples =
     zip3 a b $ map z pairs
     where
       pairs = [(a', b') | b' <- [1..9], a' <- [1..9]]
@@ -55,7 +55,7 @@ compareC (c1, _) (c2, _) =
       compareT (a1, b1, _) (a2, b2, _)
           | b1 == b2  = compare a1 a2
           | otherwise = compare b1 b2
-          
+
 
 
 readOne :: Char -> Value
@@ -117,7 +117,7 @@ solve es os =
           where
             aas' = aas \\ otherValues
             otherValues = map (\(_, Element e) -> e)
-                          ((filter (\e -> x == px e) es) ++ 
+                          ((filter (\e -> x == px e) es) ++
                            (filter (\e -> y == py e) es) ++
                            (filter (\e -> z == pz e) es))
       revaluate ((_, _, _), Element _) =
@@ -127,7 +127,7 @@ solve es os =
 isElement :: (t, Value) -> Bool
 isElement (_, Element _) = True
 isElement (_, Options _) = False
-        
+
 
 -- project coordinate from Pair
 px :: Pair -> Int
