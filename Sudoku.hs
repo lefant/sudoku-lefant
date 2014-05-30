@@ -66,36 +66,28 @@ readOne c =
 
 compute :: [Pair] -> [Pair]
 compute ls =
-    solve' done todo
+    head $ solve done todo
     where
       (done, todo) = partition isElement ls
 
-solve' :: [Pair] -> [Pair] -> [Pair]
-solve' done todo =
-    solution
-    where
-      Just solution = solve done todo
-
-solve :: [Pair] -> [Pair] -> Maybe [Pair]
-solve es [] = Just es
+solve :: [Pair] -> [Pair] -> [[Pair]]
+solve es [] = [es]
 -- solve es ((c, Options []) : os) =
     -- error $ "no more options for " ++ show c
     -- Nothing
 solve es os =
+    -- map (\a -> solve ((c, Element a) : es) os') as
     case as of
       -- no more Options, no solutions possible
-      [] -> Nothing
+      [] -> []
       -- try first option
       (a : as') ->
           -- recurse using backtracking, if we can solve it
           case solve ((c, Element a) : es) os' of
-            -- we are done
-            Just es' ->
-                Just es'
             -- this branch contains no solutions, retry without it
-            Nothing ->
-                solve es ((c, Options as') : os')
-
+            [] -> solve es ((c, Options as') : os')
+            -- we are done
+            results -> results
     where
       -- first prune all Options list at the current level, then order
       -- branches with *few* options first
